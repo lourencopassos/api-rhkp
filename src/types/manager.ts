@@ -6,7 +6,8 @@ export interface IManagerDatabase {
   addManager(manager: ManagerInputDTO): Promise<void>;
   getManagerById(id: string): Promise<Document>;
   getManagersByName(managerName: string): Promise<Document | Document[]>;
-  getManagersByEmail(email: string): Promise<Document>;
+  getManagersByEmail(email: string): Promise<any>;
+  getManagersByPhone(phone: string): Promise<any>;
   deleteManager(id: string): Promise<void>;
   updateManager(manager: ManagerEditDTO, id: string): Promise<void>;
 }

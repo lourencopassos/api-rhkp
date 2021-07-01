@@ -6,7 +6,6 @@ import { Document } from 'mongoose';
 export class ManagerDatabase extends BaseDatabase implements IManagerDatabase {
   public addManager = async (manager: ManagerInputDTO): Promise<void> => {
     try {
-      const { name, email, password, company_id, phone, photo } = manager;
       await this.getConnection();
       new ManagerModel(manager).save();
     } catch (error) {
@@ -41,6 +40,17 @@ export class ManagerDatabase extends BaseDatabase implements IManagerDatabase {
       await this.getConnection();
       return await ManagerModel.find({
         email
+      });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  public getManagersByPhone = async (phone: string): Promise<Document> => {
+    try {
+      await this.getConnection();
+      return await ManagerModel.find({
+        phone
       });
     } catch (error) {
       throw new Error(error.message);

@@ -13,7 +13,7 @@ export const ManagerSchema = new Schema({
     unique: true
   },
   company_id: {
-    type: ObjectId,
+    type: Number,
     required: 'Company Id required'
   },
   password: {
@@ -38,9 +38,9 @@ export const ManagerModel = mongoose.model('Manager', ManagerSchema);
 export interface ManagerInputDTO {
   name: string;
   email: string;
-  company_id: string;
+  company_id: number;
   password: string;
-  phone: number;
+  phone: string;
   photo?: string;
 }
 
