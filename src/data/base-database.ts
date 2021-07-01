@@ -1,10 +1,9 @@
 import mongoose, { Connection } from 'mongoose';
 
 const databaseUri =
-  process.env.ENVIROMENT === 'dev'
-    ? process.env.DB ?? 'http://localhost:27017/'
-    : 'http://localhost:27017/';
-
+  process.env.NODE_ENV === 'dev'
+    ? process.env.DB ?? 'mongodb://localhost:27017/'
+    : 'mongodb://localhost:27017/';
 export abstract class BaseDatabase {
   public getConnection = async (): Promise<Connection> => {
     await mongoose.connect(databaseUri, {
