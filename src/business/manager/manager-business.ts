@@ -1,31 +1,48 @@
 import { Document } from 'mongoose';
-import { MissingParameterError, NotFoundError } from '../../error';
+import {
+  InvalidParameterError,
+  MissingParameterError,
+  NotFoundError
+} from '../../error';
 import { ManagerEditDTO, ManagerInputDTO, ManagerModel } from '../../model';
 import { IManagerBusiness, IManagerDatabase } from '../../types';
+import { IHashManager } from '../../types/utils';
 import { schema as ManagerSchema } from './schema';
 
 export class ManagerBusiness implements IManagerBusiness {
   private managerDatabase: IManagerDatabase;
-  constructor(managerDatabase: IManagerDatabase) {
+  private hashManager: IHashManager;
+  constructor(managerDatabase: IManagerDatabase, hashManager: IHashManager) {
     this.managerDatabase = managerDatabase;
+    this.hashManager = hashManager;
   }
 
   async addManager(manager: ManagerInputDTO) {
     const { error } = ManagerSchema.validate(manager);
 
-    if (error) {
-      console.log(error);
-      throw new Error();
+    if (error?.details[0].message) {
+      throw new InvalidParameterError(error?.details[0].message);
     }
 
-    const alreadyInDatabase = await this.managerDatabase.getManagersByEmail(
-      manager.email
-    );
+    const alreadyInDatabaseByEmail =
+      await this.managerDatabase.getManagersByEmail(manager.email);
 
-    if (alreadyInDatabase) {
-      throw new Error();
+    if (alreadyInDatabaseByEmail.length !== 0) {
+      throw new InvalidParameterError('Email already subscribed');
     }
 
+    const alreadyInDatabaseByPhone =
+      await this.managerDatabase.getManagersByPhone(manager.phone);
+
+    if (alreadyInDatabaseByPhone.length !== 0) {
+      throw new InvalidParameterError('Phone already subscribed');
+    }
+
+    const { password } = manager;
+
+    const hashedPassword = await this.hashManager.hash(password);
+    manager.password = hashedPassword as unknown as string;
+    
     await this.managerDatabase.addManager(manager);
   }
 
