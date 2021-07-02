@@ -12,7 +12,7 @@ export const EmployeeSchema = new Schema({
     unique: true
   },
   company_id: {
-    type: ObjectId,
+    type: Number,
     required: 'Company Id required'
   },
   password: {
@@ -42,9 +42,9 @@ export const EmployeeModel = mongoose.model('Employee', EmployeeSchema);
 export interface EmployeeInputDTO {
   name: string;
   email?: string;
-  company_id: string;
+  company_id: number;
   password: string;
-  phone: number;
+  phone: string;
   cpf: string;
   photo?: string;
 }
@@ -53,6 +53,6 @@ export interface EmployeeEditDTO {
   name?: string;
   email?: string;
   password?: string;
-  phone?: number;
+  phone?: string;
   photo?: string;
 }
