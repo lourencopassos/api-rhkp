@@ -1,27 +1,34 @@
 import { Request, Response } from 'express';
-import { ManagerEditDTO, ManagerInputDTO } from '../model';
-import { IManagerBusiness, IManagerController } from '../types';
+import {
+  EmployeeEditDTO,
+  EmployeeInputDTO,
+} from '../model';
+import {
+  IEmployeeBusiness,
+  IEmployeeController,
+} from '../types';
 
 export class EmployeeController implements IEmployeeController {
-  private Business: IManagerBusiness;
-  constructor(managerBusiness: IManagerBusiness) {
-    this.managerBusiness = managerBusiness;
+  private employeeBusiness: IEmployeeBusiness;
+  constructor(employeeBusiness: IEmployeeBusiness) {
+    this.employeeBusiness = employeeBusiness;
   }
 
-  addManager = async (req: Request, res: Response) => {
+  addEmployee = async (req: Request, res: Response) => {
     try {
-      const { name, email, company_id, password, phone, photo } = req.body;
+      const { name, email, company_id, password, phone, photo, cpf } = req.body;
 
-      const input: ManagerInputDTO = {
+      const input: EmployeeInputDTO = {
         name,
         email,
         company_id,
         password,
         phone,
-        photo
+        photo,
+        cpf
       };
 
-      await this.managerBusiness.addManager(input);
+      await this.employeeBusiness.addEmployee(input);
 
       res.sendStatus(201);
     } catch (error) {
@@ -29,57 +36,81 @@ export class EmployeeController implements IEmployeeController {
     }
   };
 
-  getManagerById = async (req: Request, res: Response) => {
+  getEmployeeById = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
 
-      const manager = await this.managerBusiness.getManagerById(id);
-      res.status(200).send(manager);
+      const employee = await this.employeeBusiness.getEmployeeById(id);
+      res.status(200).send(employee);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }
   };
 
-  getManagerByEmail = async (req: Request, res: Response) => {
+  getEmployeesFromCompany = async (req: Request, res: Response) => {
+    try {
+      const company_id = req.params.companyId;
+
+      const employees = await this.employeeBusiness.getEmployeesFromCompany(
+        company_id
+      );
+      res.status(200).send(employees);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  };
+
+  getEmployeeByEmail = async (req: Request, res: Response) => {
     try {
       const email = req.body.email;
 
-      const manager = await this.managerBusiness.getManagerByEmail(email);
-      res.status(200).send(manager);
+      const employee = await this.employeeBusiness.getEmployeeByEmail(email);
+      res.status(200).send(employee);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }
   };
 
-  getManagerByName = async (req: Request, res: Response) => {
+  getEmployeeByName = async (req: Request, res: Response) => {
     try {
       const name = req.body.name;
 
-      const manager = await this.managerBusiness.getManagerByName(name);
-      res.status(200).send(manager);
+      const employee = await this.employeeBusiness.getEmployeeByName(name);
+      res.status(200).send(employee);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }
   };
 
-  deleteManager = async (req: Request, res: Response) => {
+  getEmployeeByCpf = async (req: Request, res: Response) => {
+    try {
+      const cpf = req.body.cpf;
+
+      const employee = await this.employeeBusiness.getEmployeeById(cpf);
+      res.status(200).send(employee);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  };
+
+  deleteEmployee = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
 
-      await this.managerBusiness.deleteManager(id);
+      await this.employeeBusiness.deleteEmployee(id);
       res.sendStatus(204);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }
   };
 
-  updateManager = async (req: Request, res: Response) => {
+  updateEmployee = async (req: Request, res: Response) => {
     try {
       const id = req.params.id;
 
       const { name, email, company_id, password, phone, photo } = req.body;
 
-      const managerToUpdate: ManagerEditDTO = {
+      const employeeToUpdate: EmployeeEditDTO = {
         name,
         email,
         password,
@@ -87,7 +118,7 @@ export class EmployeeController implements IEmployeeController {
         photo
       };
 
-      await this.managerBusiness.updateManager(managerToUpdate, id);
+      await this.employeeBusiness.updateEmployee(employeeToUpdate, id);
       res.sendStatus(204);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
