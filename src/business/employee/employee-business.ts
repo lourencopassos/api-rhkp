@@ -40,46 +40,84 @@ export class EmployeeBusiness implements IEmployeeBusiness {
     await this.database.addEmployee(employee);
   }
 
-  async getManagerById(id: string): Promise<Document> {
+  async getEmployeeById(id: string): Promise<Document[]> {
     if (!id) {
       throw new MissingParameterError('id');
     }
 
-    const manager = await this.database.getEmployeeById(id);
+    const employee = await this.database.getEmployeeById(id);
 
-    if (!manager) {
+    if (!employee) {
       throw new NotFoundError();
     }
 
-    return manager;
+    return employee;
+  }
+  
+  async getEmployeesFromCompany(company_id: string): Promise<Document[]> {
+    if (!company_id) {
+      throw new MissingParameterError('company_id');
+    }
+
+    const employees = await this.database.getEmployeesFromCompany(company_id);
+
+    return employees;
   }
 
-  async getEmployeeByEmail(email: string): Promise<Document> {
+  async getEmployeeByCpf(cpf: string): Promise<Document[]> {
+    if (!cpf) {
+      throw new MissingParameterError('cpf');
+    }
+
+    const employee = await this.database.getEmployeeByCpf(cpf);
+
+    if (!employee) {
+      throw new NotFoundError();
+    }
+
+    return employee;
+  }
+
+  async getEmployeeByEmail(email: string): Promise<Document[]> {
     if (!email) {
       throw new MissingParameterError('email');
     }
 
-    const manager = await this.database.getEmployeeByEmail(email);
+    const employee = await this.database.getEmployeeByEmail(email);
 
-    if (!manager) {
+    if (!employee) {
       throw new NotFoundError();
     }
 
-    return manager;
+    return employee;
   }
 
-  async getEmployeeByName(name: string): Promise<Document | Document[]> {
+  async getEmployeeByPhone(phone: string): Promise<Document[]> {
+    if (!phone) {
+      throw new MissingParameterError('phone');
+    }
+
+    const employee = await this.database.getEmployeeByPhone(phone);
+
+    if (!employee) {
+      throw new NotFoundError();
+    }
+
+    return employee;
+  }
+
+  async getEmployeeByName(name: string): Promise<Document[]> {
     if (!name) {
       throw new MissingParameterError('name');
     }
 
-    const manager = await this.database.getEmployeeByName(name);
+    const employee = await this.database.getEmployeeByName(name);
 
-    if (!manager) {
+    if (!employee) {
       throw new NotFoundError();
     }
 
-    return manager;
+    return employee;
   }
 
   async deleteEmployee(id: string): Promise<void> {
@@ -87,30 +125,30 @@ export class EmployeeBusiness implements IEmployeeBusiness {
       throw new MissingParameterError('id');
     }
 
-    const manager = await this.database.getEmployeeById(id);
+    const employee = await this.database.getEmployeeById(id);
 
-    if (!manager) {
+    if (!employee) {
       throw new NotFoundError();
     }
 
     await this.database.deleteEmployee(id);
   }
 
-  async updateEmployee(manager: EmployeeEditDTO, id: string): Promise<void> {
+  async updateEmployee(employee: EmployeeEditDTO, id: string): Promise<void> {
     if (!id) {
       throw new MissingParameterError('id');
     }
 
-    if (!manager) {
-      throw new MissingParameterError('manager to update');
+    if (!employee) {
+      throw new MissingParameterError('employee to update');
     }
 
-    const managerToUpdate = await this.database.getEmployeeById(id);
+    const employeeToUpdate = await this.database.getEmployeeById(id);
 
-    if (!managerToUpdate) {
+    if (!employeeToUpdate) {
       throw new NotFoundError();
     }
 
-    await this.database.updateEmployee(manager, id);
+    await this.database.updateEmployee(employee, id);
   }
 }
