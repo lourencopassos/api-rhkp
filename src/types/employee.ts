@@ -4,18 +4,24 @@ import { EmployeeEditDTO, EmployeeInputDTO, ManagerEditDTO, ManagerInputDTO } fr
 
 export interface IEmployeeDatabase {
   addEmployee(manager: EmployeeInputDTO): Promise<void>;
-  getEmployeeById(id: string): Promise<Document>;
-  getEmployeeByName(managerName: string): Promise<Document | Document[]>;
-  getEmployeeByEmail(email: string): Promise<any>;
-  getEmployeeByPhone(phone: string): Promise<any>;
+  getEmployeeById(id: string): Promise<Document[]>;
+  getEmployeeByName(managerName: string): Promise<Document[]>;
+  getEmployeeByEmail(email: string): Promise<Document[]>;
+  getEmployeeByPhone(phone: string): Promise<Document[]>;
+  getEmployeeByCpf(cpf: string): Promise<Document[]>;
+  getEmployeesFromCompany(company_id: string): Promise<Document[]>;
+  getEmployeeById(id: string): Promise<Document[]>;
   deleteEmployee(id: string): Promise<void>;
   updateEmployee(manager: EmployeeEditDTO, id: string): Promise<void>;
 }
 
 export interface IEmployeeBusiness {
   addEmployee(manager: EmployeeInputDTO): Promise<void>;
-  getEmployeeByName(managerName: string): Promise<Document | Document[]>;
-  getEmployeeByEmail(email: string): Promise<any>;
+  getEmployeeByName(managerName: string): Promise<Document[]>;
+  getEmployeesFromCompany(company_id: string): Promise<Document[]>;
+  getEmployeeByEmail(email: string): Promise<Document[]>;
+  getEmployeeById(id: string): Promise<Document[]>;
+  getEmployeeByCpf(cpf: string): Promise<Document[]>;
   deleteEmployee(id: string): Promise<void>;
   updateEmployee(manager: EmployeeEditDTO, id: string): Promise<void>;
 }
@@ -25,6 +31,8 @@ export interface IEmployeeController {
   getEmployeeById(req: Request, res: Response): Promise<void>;
   getEmployeeByName(req: Request, res: Response): Promise<void>;
   getEmployeeByEmail(req: Request, res: Response): Promise<void>;
+  getEmployeeByCpf(req: Request, res: Response): Promise<void>;
+  getEmployeesFromCompany(req: Request, res: Response): Promise<void>;
   deleteEmployee(req: Request, res: Response): Promise<void>;
   updateEmployee(req: Request, res: Response): Promise<void>;
 }
