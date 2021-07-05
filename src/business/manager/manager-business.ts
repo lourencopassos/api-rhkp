@@ -4,7 +4,7 @@ import {
   MissingParameterError,
   NotFoundError
 } from '../../error';
-import { ManagerEditDTO, ManagerInputDTO, ManagerModel } from '../../model';
+import { ManagerEditDTO, ManagerInputDTO } from '../../model';
 import { IManagerBusiness, IManagerDatabase } from '../../types';
 import { IHashManager } from '../../types/utils';
 import { schema as ManagerSchema } from './schema';
