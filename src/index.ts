@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { AddressInfo } from 'net';
 import express from 'express';
 import cors from 'cors';
-import { managerRouter, employeeRouter } from './routes';
+import { managerRouter, employeeRouter, companyRouter } from './routes';
 
 dotenv.config();
 const app = express();
@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use(`/${process.env.API_VERSION}/manager`, managerRouter);
 app.use(`/${process.env.API_VERSION}/employee`, employeeRouter);
+app.use(`/${process.env.API_VERSION}/company`, companyRouter);
 
 export const server = app.listen(3000, () => {
   if (server) {
