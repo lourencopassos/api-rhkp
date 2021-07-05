@@ -4,7 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const QuantitativeEvaluationSchema = new Schema({
   manager_ratings: {
-    type: [{ criterion: String, rating: Number }],
+    type: [{ criterion: String, rating: Number, id: Number }],
     required: 'Ratings required'
   },
   evaluator_id: {
@@ -21,7 +21,7 @@ export const QuantitativeEvaluationSchema = new Schema({
     required: 'Date required'
   },
   self_ratings: {
-    type: [{ criterion: String, rating: Number }],
+    type: [{ criterion: String, rating: Number, id: Number }],
     required: 'Ratings required'
   }
 });

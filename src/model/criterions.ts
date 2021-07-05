@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 export const CriterionsSchema = new Schema({
   name: {
@@ -8,14 +8,24 @@ export const CriterionsSchema = new Schema({
     required: 'Criterion name required'
   },
   belongs_to: {
-    type: ObjectId,
+    type: Number,
     required: 'Belongs to required'
+  },
+  _id: {
+    type: Number
   }
 });
+
+CriterionsSchema.plugin(AutoIncrement);
 
 export const CriterionModel = mongoose.model('Criterion', CriterionsSchema);
 
 export interface CriterionInputDTO {
   name: string;
   belongs_to: string;
+}
+
+export interface CriterionEditDTO {
+  name?: string;
+  belongs_to?: string;
 }
