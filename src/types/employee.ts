@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Document } from 'mongoose';
-import { EmployeeEditDTO, EmployeeInputDTO, ManagerEditDTO, ManagerInputDTO } from '../model';
+import { EmployeeEditDTO, EmployeeInputDTO } from '../model';
 
 export interface IEmployeeDatabase {
   addEmployee(manager: EmployeeInputDTO): Promise<void>;
