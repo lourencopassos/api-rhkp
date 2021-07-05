@@ -14,7 +14,6 @@ export const CompanySchema = new Schema(
     },
     _id: {
       type: Number,
-      required: 'Belongs to required'
     }
   },
   { _id: false }
