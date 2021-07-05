@@ -1,8 +1,7 @@
 import express from 'express';
-import { EmployeeBusiness, ManagerBusiness } from '../business';
+import { EmployeeBusiness } from '../business';
 import { EmployeeController } from '../controller';
-import { ManagerController } from '../controller/manager-controller';
-import { EmployeeDatabase, ManagerDatabase } from '../data';
+import { EmployeeDatabase } from '../data';
 import { HashManager } from '../utils/password-hash';
 
 export const employeeRouter = express.Router();
