@@ -1,8 +1,9 @@
 import { CompanyEditDTO, CompanyInputDTO, CompanyModel } from '../model';
 import { BaseDatabase } from '.';
+import { Document } from 'mongoose';
 
-export class EmployeeDatabase extends BaseDatabase {
-  public addCompany = async (company: CompanyInputDTO) => {
+export class CompanyDatabase extends BaseDatabase {
+  public addCompany = async (company: CompanyInputDTO): Promise<void> => {
     try {
       const { name, logo } = company;
       await this.getConnection();
@@ -15,10 +16,28 @@ export class EmployeeDatabase extends BaseDatabase {
     }
   };
 
-  public getCompanyById = async (id: string) => {
+  public getCompanyById = async (id: string): Promise<Document[]> => {
     try {
       await this.getConnection();
       return await CompanyModel.findById(id).exec();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  public getCompanies = async (): Promise<Document[]> => {
+    try {
+      await this.getConnection();
+      return await CompanyModel.find({}).exec();
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  public getCompanyByName = async (name: string): Promise<Document[]> => {
+    try {
+      await this.getConnection();
+      return await CompanyModel.find({name}).exec();
     } catch (error) {
       throw new Error(error.message);
     }
