@@ -1,8 +1,9 @@
 import { CompanyEditDTO, CompanyInputDTO, CompanyModel } from '../model';
 import { BaseDatabase } from '.';
 import { Document } from 'mongoose';
+import { ICompanyDatabase } from '../types';
 
-export class CompanyDatabase extends BaseDatabase {
+export class CompanyDatabase extends BaseDatabase implements ICompanyDatabase {
   public addCompany = async (company: CompanyInputDTO): Promise<void> => {
     try {
       const { name, logo } = company;
