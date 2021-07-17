@@ -1,7 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-const ObjectId = mongoose.Schema.Types.ObjectId;
-
 export const ManagerSchema = new Schema({
   name: {
     type: String,
