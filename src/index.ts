@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { AddressInfo } from 'net';
 import express from 'express';
 import cors from 'cors';
-import { managerRouter, employeeRouter, companyRouter } from './routes';
+import { managerRouter, employeeRouter, companyRouter, criterionRouter, quantitativeEvaluationRouter } from './routes';
 
 dotenv.config();
 const app = express();
@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(`/${process.env.API_VERSION}/manager`, managerRouter);
 app.use(`/${process.env.API_VERSION}/employee`, employeeRouter);
 app.use(`/${process.env.API_VERSION}/company`, companyRouter);
+app.use(`/${process.env.API_VERSION}/criterion`, criterionRouter);
+app.use(`/${process.env.API_VERSION}/quantitative-evaluation`, quantitativeEvaluationRouter);
 
 export const server = app.listen(3000, () => {
   if (server) {

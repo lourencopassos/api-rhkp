@@ -12,26 +12,26 @@ const controller = new QuantitativeEvaluationController(business);
 
 quantitativeEvaluationRouter.post('/', controller.addEvaluation);
 quantitativeEvaluationRouter.get(
-  '/quantitative-evaluation/:id',
+  '/:id',
   controller.getEvaluationById
 );
 quantitativeEvaluationRouter.get(
-  '/quantitative-evaluation/employee/:id',
+  '/employee/:id',
   controller.getEvaluationsFromEmployeeById
 );
 quantitativeEvaluationRouter.get(
-  '/quantitative-evaluation/manager/:id',
+  '/manager/:id',
   controller.getEvaluationsFromManagerById
 );
 quantitativeEvaluationRouter.get(
-  '/quantitative-evaluation/company/:id',
+  'company/:id',
   controller.getCompanyEvaluations
 );
 quantitativeEvaluationRouter.patch(
-  '/quantitative-evaluation/:id',
+  '/:id',
   controller.updateEvaluation
 );
 quantitativeEvaluationRouter.delete(
-  '/quantitative-evaluation/:id',
+  '/:id',
   controller.deleteEvaluation
 );
