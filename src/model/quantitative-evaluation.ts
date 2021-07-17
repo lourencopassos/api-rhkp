@@ -63,5 +63,5 @@ export interface QuantitativeEvaluationEditDTO {
   self_ratings?: Array<Rating>;
   manager_ratings?: Array<Rating>;
   belongs_to?: number;
-  updated_at: string;
+  updated_at: number;
 }

@@ -33,16 +33,16 @@ export interface IQuantitativeEvaluationBusiness {
 
 export interface IQuantitativeEvaluationController {
   addEvaluation(req: Request, res: Response): Promise<void>;
-  getEvaluationById(req: Request, res: Response): Promise<Document[]>;
+  getEvaluationById(req: Request, res: Response): Promise<void>;
   getEvaluationsFromEmployeeById(
     req: Request,
     res: Response
-  ): Promise<Document[]>;
+  ): Promise<void>;
   getEvaluationsFromManagerById(
     req: Request,
     res: Response
-  ): Promise<Document[]>;
-  getCompanyEvaluations(req: Request, res: Response): Promise<Document[]>;
+  ): Promise<void>;
+  getCompanyEvaluations(req: Request, res: Response): Promise<void>;
   deleteEvaluation(req: Request, res: Response): Promise<void>;
   updateEvaluation(req: Request, res: Response): Promise<void>;
 }
