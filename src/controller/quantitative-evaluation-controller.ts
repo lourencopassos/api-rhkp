@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
 import {
-  CompanyEditDTO,
-  CompanyInputDTO,
   QuantitativeEvaluationEditDTO,
   QuantitativeEvaluationInputDTO
 } from '../model';
