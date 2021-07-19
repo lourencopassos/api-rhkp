@@ -28,9 +28,30 @@ export class EmployeeController implements IEmployeeController {
         cpf
       };
 
-      await this.employeeBusiness.addEmployee(input);
+      const token = await this.employeeBusiness.addEmployee(input);
+      res.status(201).send(token);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  };
 
-      res.sendStatus(201);
+  login = async (req: Request, res: Response) => {
+    try {
+      const { password, phone, cpf } = req.body;
+      let loginData;
+
+      phone
+        ? (loginData = {
+            phone,
+            password
+          })
+        : (loginData = {
+            cpf,
+            password
+          });
+
+      const token = await this.employeeBusiness.login(loginData);
+      res.status(201).send(token);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }

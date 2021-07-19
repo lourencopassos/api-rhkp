@@ -53,11 +53,11 @@ export class QualitativeEvaluationDatabase
   };
 
   public getCompanyEvaluations = async (
-    belongs_to: number
+    company_id: number
   ): Promise<Document[]> => {
     try {
       await this.getConnection();
-      return await QualitativeEvaluationModel.find({ belongs_to }).exec();
+      return await QualitativeEvaluationModel.find({ company_id }).exec();
     } catch (error) {
       throw new Error(error.message);
     }

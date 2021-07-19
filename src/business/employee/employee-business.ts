@@ -4,20 +4,31 @@ import {
   MissingParameterError,
   NotFoundError
 } from '../../error';
-import { EmployeeEditDTO, EmployeeInputDTO } from '../../model';
+import {
+  EmployeeCpfLoginInput,
+  EmployeeEditDTO,
+  EmployeeInputDTO,
+  EmployeePhoneLoginInput
+} from '../../model';
 import { IEmployeeBusiness, IEmployeeDatabase } from '../../types/employee';
-import { IHashManager } from '../../types/utils';
+import { IAuthenticator, IHashManager } from '../../types/utils';
 import { schema as EmployeeSchema } from './schema';
 
 export class EmployeeBusiness implements IEmployeeBusiness {
   private database: IEmployeeDatabase;
   private hashManager: IHashManager;
-  constructor(database: IEmployeeDatabase, hashManager: IHashManager) {
+  private authenticator: IAuthenticator;
+  constructor(
+    database: IEmployeeDatabase,
+    hashManager: IHashManager,
+    authenticator: IAuthenticator
+  ) {
     this.database = database;
     this.hashManager = hashManager;
+    this.authenticator = authenticator;
   }
 
-  async addEmployee(employee: EmployeeInputDTO) {
+  async addEmployee(employee: EmployeeInputDTO): Promise<string> {
     const { error } = EmployeeSchema.validate(employee);
 
     if (error?.details[0].message) {
@@ -32,12 +43,56 @@ export class EmployeeBusiness implements IEmployeeBusiness {
       throw new InvalidParameterError('Phone already subscribed');
     }
 
-    const { password } = employee;
+    const { password, company_id, cpf } = employee;
 
     const hashedPassword = await this.hashManager.hash(password);
     employee.password = hashedPassword as unknown as string;
 
     await this.database.addEmployee(employee);
+
+    return this.authenticator.generateToken(
+      { cpf, company_id },
+      process.env.ACCESS_TOKEN_EXPIRES_IN!
+    );
+  }
+
+  async login(
+    loginData: EmployeeCpfLoginInput | EmployeePhoneLoginInput
+  ): Promise<string> {
+    
+    if (!loginData) {
+      throw new MissingParameterError('login data');
+    }
+
+    if ('cpf' in loginData) {
+      const employee = await this.database.getEmployeeByCpf(loginData.cpf);
+
+      if (!employee) {
+        throw new NotFoundError();
+      }
+      const { cpf, company_id, password } = employee;
+
+      await this.hashManager.compare(loginData.password, password.password);
+
+      return this.authenticator.generateToken(
+        { cpf, company_id },
+        process.env.ACCESS_TOKEN_EXPIRES_IN!
+      );
+    } else {
+      const employee = await this.database.getEmployeeByCpf(loginData.phone);
+
+      if (!employee) {
+        throw new NotFoundError();
+      }
+      const { phone, company_id, password } = employee;
+
+      await this.hashManager.compare(loginData.password, password);
+
+      return this.authenticator.generateToken(
+        { phone, company_id },
+        process.env.ACCESS_TOKEN_EXPIRES_IN!
+      );
+    }
   }
 
   async getEmployeeById(id: string): Promise<Document[]> {
@@ -53,7 +108,7 @@ export class EmployeeBusiness implements IEmployeeBusiness {
 
     return employee;
   }
-  
+
   async getEmployeesFromCompany(company_id: string): Promise<Document[]> {
     if (!company_id) {
       throw new MissingParameterError('company_id');

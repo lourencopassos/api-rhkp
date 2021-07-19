@@ -10,7 +10,7 @@ export interface IQuantitativeEvaluationDatabase {
   getEvaluationById(id: number): Promise<Document[]>;
   getEvaluationsFromEmployeeById(id: number): Promise<Document[]>;
   getEvaluationsFromManagerById(id: number): Promise<Document[]>;
-  getCompanyEvaluations(belongs_to: number): Promise<Document[]>;
+  getCompanyEvaluations(company_id: number): Promise<Document[]>;
   deleteEvaluation(id: number): Promise<void>;
   updateEvaluation(
     evaluation: QuantitativeEvaluationEditDTO,
@@ -23,7 +23,7 @@ export interface IQuantitativeEvaluationBusiness {
   getEvaluationById(id: number): Promise<Document[]>;
   getEvaluationsFromEmployeeById(id: number): Promise<Document[]>;
   getEvaluationsFromManagerById(id: number): Promise<Document[]>;
-  getCompanyEvaluations(belongs_to: number): Promise<Document[]>;
+  getCompanyEvaluations(company_id: number): Promise<Document[]>;
   deleteEvaluation(id: number): Promise<void>;
   updateEvaluation(
     evaluation: QuantitativeEvaluationEditDTO,

@@ -23,7 +23,7 @@ export class QuantitativeEvaluationController
         evaluee_id,
         self_ratings,
         manager_ratings,
-        belongs_to
+        company_id
       } = req.body;
 
       const input: QuantitativeEvaluationInputDTO = {
@@ -31,7 +31,7 @@ export class QuantitativeEvaluationController
         evaluee_id,
         self_ratings,
         manager_ratings,
-        belongs_to
+        company_id
       };
 
       await this.quantitativeEvaluationBusiness.addEvaluation(input);
@@ -84,11 +84,11 @@ export class QuantitativeEvaluationController
 
   getCompanyEvaluations = async (req: Request, res: Response) => {
     try {
-      const belongs_to = Number(req.params.belongsTo);
+      const company_id = Number(req.params.belongsTo);
 
       const evaluations =
         await this.quantitativeEvaluationBusiness.getEvaluationsFromManagerById(
-          belongs_to
+          company_id
         );
       res.status(200).send(evaluations);
     } catch (error) {
@@ -116,7 +116,7 @@ export class QuantitativeEvaluationController
         evaluee_id,
         self_ratings,
         manager_ratings,
-        belongs_to
+        company_id
       } = req.body;
 
       const evaluationToUpdate: QuantitativeEvaluationEditDTO = {
@@ -124,7 +124,7 @@ export class QuantitativeEvaluationController
         evaluee_id,
         self_ratings,
         manager_ratings,
-        belongs_to,
+        company_id,
         updated_at: Date.now()
       };
 

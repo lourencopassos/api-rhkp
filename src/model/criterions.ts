@@ -7,7 +7,7 @@ export const CriterionsSchema = new Schema({
     type: String,
     required: 'Criterion name required'
   },
-  belongs_to: {
+  company_id: {
     type: Number,
     required: 'Belongs to required'
   },
@@ -22,10 +22,10 @@ export const CriterionModel = mongoose.model('Criterion', CriterionsSchema);
 
 export interface CriterionInputDTO {
   name: string;
-  belongs_to: string;
+  company_id: number;
 }
 
 export interface CriterionEditDTO {
   name?: string;
-  belongs_to?: string;
+  company_id?: number;
 }

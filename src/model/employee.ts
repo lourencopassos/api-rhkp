@@ -56,3 +56,13 @@ export interface EmployeeEditDTO {
   phone?: string;
   photo?: string;
 }
+
+export interface EmployeeCpfLoginInput {
+  cpf: string;
+  password: string;
+}
+
+export interface EmployeePhoneLoginInput {
+  phone: string;
+  password: string;
+}

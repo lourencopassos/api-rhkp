@@ -3,10 +3,7 @@ import { BaseDatabase } from '.';
 import { Document } from 'mongoose';
 import { ICriterionDatabase } from '../types/criterion';
 
-export class CriterionDatabase
-  extends BaseDatabase
-  implements ICriterionDatabase
-{
+export class CriterionDatabase extends BaseDatabase implements ICriterionDatabase {
   public addCriterion = async (criterion: CriterionInputDTO): Promise<void> => {
     try {
       await this.getConnection();
@@ -35,11 +32,11 @@ export class CriterionDatabase
   };
 
   public getCompanyCriterions = async (
-    belongs_to: number
+    company_id: number
   ): Promise<Document[]> => {
     try {
       await this.getConnection();
-      return await CriterionModel.find({ belongs_to }).exec();
+      return await CriterionModel.find({ company_id }).exec();
     } catch (error) {
       throw new Error(error.message);
     }

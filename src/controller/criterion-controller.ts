@@ -20,11 +20,11 @@ export class CriterionController implements ICriterionController {
 
   addCriterion = async (req: Request, res: Response) => {
     try {
-      const { name, belongs_to } = req.body;
+      const { name, company_id } = req.body;
 
       const input: CriterionInputDTO = {
         name,
-        belongs_to
+        company_id
       };
 
       await this.criterionBusiness.addCriterion(input);
@@ -57,10 +57,10 @@ export class CriterionController implements ICriterionController {
 
   getCompanyCriterions = async (req: Request, res: Response) => {
     try {
-      const belongs_to = Number(req.body.belongs_to);
+      const company_id = Number(req.body.company_id);
 
       const criterions = await this.criterionBusiness.getCompanyCriterions(
-        belongs_to
+        company_id
       );
       res.status(200).send(criterions);
     } catch (error) {
@@ -83,11 +83,11 @@ export class CriterionController implements ICriterionController {
     try {
       const id = Number(req.params.id);
 
-      const { name, belongs_to } = req.body;
+      const { name, company_id } = req.body;
 
       const criterionToUpdate: CriterionEditDTO = {
         name,
-        belongs_to
+        company_id
       };
 
       await this.criterionBusiness.updateCriterion(criterionToUpdate, id);

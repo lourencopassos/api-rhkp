@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { Document } from 'mongoose';
-import { EmployeeEditDTO, EmployeeInputDTO } from '../model';
+import {
+  EmployeeCpfLoginInput,
+  EmployeeEditDTO,
+  EmployeeInputDTO,
+  EmployeePhoneLoginInput
+} from '../model';
 
 export interface IEmployeeDatabase {
   addEmployee(manager: EmployeeInputDTO): Promise<void>;
@@ -8,7 +13,7 @@ export interface IEmployeeDatabase {
   getEmployeeByName(managerName: string): Promise<Document[]>;
   getEmployeeByEmail(email: string): Promise<Document[]>;
   getEmployeeByPhone(phone: string): Promise<Document[]>;
-  getEmployeeByCpf(cpf: string): Promise<Document[]>;
+  getEmployeeByCpf(cpf: string): Promise<any>;
   getEmployeesFromCompany(company_id: string): Promise<Document[]>;
   getEmployeeById(id: string): Promise<Document[]>;
   deleteEmployee(id: string): Promise<void>;
@@ -16,11 +21,14 @@ export interface IEmployeeDatabase {
 }
 
 export interface IEmployeeBusiness {
-  addEmployee(manager: EmployeeInputDTO): Promise<void>;
+  addEmployee(manager: EmployeeInputDTO): Promise<string>;
   getEmployeeByName(managerName: string): Promise<Document[]>;
   getEmployeesFromCompany(company_id: string): Promise<Document[]>;
   getEmployeeByEmail(email: string): Promise<Document[]>;
   getEmployeeById(id: string): Promise<Document[]>;
+  login(
+    loginData: EmployeeCpfLoginInput | EmployeePhoneLoginInput
+  ): Promise<string>;
   getEmployeeByCpf(cpf: string): Promise<Document[]>;
   deleteEmployee(id: string): Promise<void>;
   updateEmployee(manager: EmployeeEditDTO, id: string): Promise<void>;

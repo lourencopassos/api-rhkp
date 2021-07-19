@@ -18,7 +18,7 @@ export class QualitativeEvaluationController
 
   addEvaluation = async (req: Request, res: Response) => {
     try {
-      const { evaluator_id, evaluee_id, title, description, belongs_to } =
+      const { evaluator_id, evaluee_id, title, description, company_id } =
         req.body;
 
       const input: QualitativeEvaluationInputDTO = {
@@ -26,7 +26,7 @@ export class QualitativeEvaluationController
         evaluee_id,
         title,
         description,
-        belongs_to
+        company_id
       };
 
       await this.qualitativeBusiness.addEvaluation(input);
@@ -74,11 +74,11 @@ export class QualitativeEvaluationController
 
   getCompanyEvaluations = async (req: Request, res: Response) => {
     try {
-      const belongs_to = Number(req.params.belongsTo);
+      const company_id = Number(req.params.belongsTo);
 
       const evaluations =
         await this.qualitativeBusiness.getEvaluationsFromManagerById(
-          belongs_to
+          company_id
         );
       res.status(200).send(evaluations);
     } catch (error) {
@@ -101,7 +101,7 @@ export class QualitativeEvaluationController
     try {
       const id = Number(req.params.id);
 
-      const { evaluator_id, evaluee_id, title, description, belongs_to } =
+      const { evaluator_id, evaluee_id, title, description, company_id } =
         req.body;
 
       const evaluationToUpdate: QualitativeEvaluationEditDTO = {
@@ -109,7 +109,7 @@ export class QualitativeEvaluationController
         evaluee_id,
         title,
         description,
-        belongs_to,
+        company_id,
         updated_at: Date.now()
       };
 

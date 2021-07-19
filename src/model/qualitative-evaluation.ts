@@ -25,9 +25,9 @@ export const QualitativeEvaluationSchema = new Schema({
     required: 'Date required'
   },
   updated_at: {
-    type: Date,
+    type: Date
   },
-  belongs_to: {
+  company_id: {
     type: Number,
     required: 'Belongs to required'
   }
@@ -45,7 +45,7 @@ export interface QualitativeEvaluationInputDTO {
   description: string;
   evaluator_id: string;
   evaluee_id: string;
-  belongs_to: number;
+  company_id: number;
 }
 
 export interface QualitativeEvaluationEditDTO {
@@ -54,5 +54,5 @@ export interface QualitativeEvaluationEditDTO {
   evaluator_id?: string;
   evaluee_id?: string;
   updated_at: number;
-  belongs_to?: number;
+  company_id?: number;
 }

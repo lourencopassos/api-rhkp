@@ -12,9 +12,7 @@ import {
 import {} from '../../types/quantitative-evaluation';
 import { schema as QuantitativeEvaluationSchema } from './schema';
 
-export class QualitativeEvaluationBusiness
-  implements IQualitativeEvaluationBusiness
-{
+export class QualitativeEvaluationBusiness implements IQualitativeEvaluationBusiness {
   private qualitativeEvaluationDatabase: IQualitativeEvaluationDatabase;
   constructor(qualitativeEvaluationDatabase: IQualitativeEvaluationDatabase) {
     this.qualitativeEvaluationDatabase = qualitativeEvaluationDatabase;
@@ -79,14 +77,14 @@ export class QualitativeEvaluationBusiness
     return evaluation;
   }
 
-  async getCompanyEvaluations(belongs_to: number): Promise<Document[]> {
-    if (!belongs_to) {
-      throw new MissingParameterError('belongs_to');
+  async getCompanyEvaluations(company_id: number): Promise<Document[]> {
+    if (!company_id) {
+      throw new MissingParameterError('company_id');
     }
 
     const evaluation =
       await this.qualitativeEvaluationDatabase.getEvaluationsFromManagerById(
-        belongs_to
+        company_id
       );
 
     if (!evaluation) {
