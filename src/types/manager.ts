@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Document } from 'mongoose';
-import { ManagerEditDTO, ManagerInputDTO } from '../model';
+import { ManagerEditDTO, ManagerInputDTO, ManagerLoginInput } from '../model';
 
 export interface IManagerDatabase {
   addManager(manager: ManagerInputDTO): Promise<void>;
@@ -13,7 +13,8 @@ export interface IManagerDatabase {
 }
 
 export interface IManagerBusiness {
-  addManager(manager: ManagerInputDTO): Promise<void>;
+  addManager(manager: ManagerInputDTO): Promise<string>;
+  login(loginData: ManagerLoginInput): Promise<string>;
   getManagerById(id: string): Promise<Document>;
   getManagerByName(managerName: string): Promise<Document | Document[]>;
   getManagerByEmail(email: string): Promise<Document>;
