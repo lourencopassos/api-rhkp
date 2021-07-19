@@ -50,7 +50,7 @@ export class EmployeeBusiness implements IEmployeeBusiness {
 
     await this.database.addEmployee(employee);
 
-    return this.authenticator.generateToken(
+    return this.authenticator.generateTokenByCpf(
       { cpf, company_id },
       process.env.ACCESS_TOKEN_EXPIRES_IN!
     );
@@ -72,9 +72,9 @@ export class EmployeeBusiness implements IEmployeeBusiness {
       }
       const { cpf, company_id, password } = employee;
 
-      await this.hashManager.compare(loginData.password, password.password);
+      await this.hashManager.compare(loginData.password, password);
 
-      return this.authenticator.generateToken(
+      return this.authenticator.generateTokenByCpf(
         { cpf, company_id },
         process.env.ACCESS_TOKEN_EXPIRES_IN!
       );
@@ -88,7 +88,7 @@ export class EmployeeBusiness implements IEmployeeBusiness {
 
       await this.hashManager.compare(loginData.password, password);
 
-      return this.authenticator.generateToken(
+      return this.authenticator.generateTokenByPhone(
         { phone, company_id },
         process.env.ACCESS_TOKEN_EXPIRES_IN!
       );
