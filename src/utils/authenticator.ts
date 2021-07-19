@@ -2,13 +2,13 @@ import * as jwt from 'jsonwebtoken';
 
 export class Authenticator {
   public generateToken(
-    input: AuthenticationData,
+    input: EmployeeAuthenticationData,
     expiresIn: string = process.env.ACCESS_TOKEN_EXPIRES_IN!
   ): string {
     const token = jwt.sign(
       {
-        id: input.id,
-        role: input.role
+        cpf: input.cpf,
+        company_id: input.company_id
       },
       process.env.JWT_KEY as string,
       {
@@ -18,17 +18,18 @@ export class Authenticator {
     return token;
   }
 
-  public getData(token: string): AuthenticationData {
+  public getDataEmployee(token: string): EmployeeAuthenticationData {
     const payload = jwt.verify(token, process.env.JWT_KEY as string) as any;
     const result = {
-      id: payload.id,
-      role: payload.role
+      cpf: payload.cpf,
+      company_id: payload.company_id
     };
     return result;
   }
 }
 
-interface AuthenticationData {
-  id: string;
-  role?: string;
+export interface EmployeeAuthenticationData {
+  cpf?: string;
+  phone?: string;
+  company_id: number;
 }
