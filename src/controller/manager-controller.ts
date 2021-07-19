@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ManagerEditDTO, ManagerInputDTO } from '../model';
+import { ManagerEditDTO, ManagerInputDTO, ManagerLoginInput } from '../model';
 import { IManagerBusiness, IManagerController } from '../types';
 
 export class ManagerController implements IManagerController {
@@ -21,9 +21,24 @@ export class ManagerController implements IManagerController {
         photo
       };
 
-      await this.managerBusiness.addManager(input);
+      const token = await this.managerBusiness.addManager(input);
+      res.status(201).send(token);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  };
 
-      res.sendStatus(201);
+  login = async (req: Request, res: Response) => {
+    try {
+      const { password, email } = req.body;
+
+      const loginData: ManagerLoginInput = {
+        email,
+        password
+      };
+
+      const token = await this.managerBusiness.login(loginData);
+      res.status(201).send(token);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }
