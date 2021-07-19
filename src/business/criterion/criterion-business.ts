@@ -66,18 +66,18 @@ export class CriterionBusiness implements ICriterionBusiness {
     await this.criterionDatabase.deleteCriterion(id);
   }
 
-  async getCompanyCriterions(belongs_to: number): Promise<Document[]> {
-    if (!belongs_to) {
-      throw new MissingParameterError('belongs_to id');
+  async getCompanyCriterions(company_id: number): Promise<Document[]> {
+    if (!company_id) {
+      throw new MissingParameterError('company_id id');
     }
 
-    const criterion = await this.criterionDatabase.getCriterionById(belongs_to);
+    const criterion = await this.criterionDatabase.getCriterionById(company_id);
 
     if (!criterion) {
       throw new NotFoundError();
     }
 
-    return this.criterionDatabase.getCompanyCriterions(belongs_to);
+    return this.criterionDatabase.getCompanyCriterions(company_id);
   }
 
   async updateCriterion(

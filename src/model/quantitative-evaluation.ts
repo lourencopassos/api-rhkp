@@ -30,7 +30,7 @@ export const QuantitativeEvaluationSchema = new Schema({
   _id: {
     type: Number
   },
-  belongs_to: {
+  company_id: {
     type: Number,
     required: 'Belongs to required'
   }
@@ -48,7 +48,7 @@ export interface QuantitativeEvaluationInputDTO {
   evaluee_id: string;
   self_ratings: Array<Rating>;
   manager_ratings: Array<Rating>;
-  belongs_to: number;
+  company_id: number;
 }
 
 export interface Rating {
@@ -62,6 +62,6 @@ export interface QuantitativeEvaluationEditDTO {
   evaluee_id?: string;
   self_ratings?: Array<Rating>;
   manager_ratings?: Array<Rating>;
-  belongs_to?: number;
+  company_id?: number;
   updated_at: number;
 }

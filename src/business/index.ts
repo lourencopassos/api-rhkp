@@ -3,3 +3,4 @@ export * from './employee/employee-business'
 export * from './company/company-business';
 export * from './criterion/criterion-business';
 export * from './quantitative-evaluation/quantitative-evaluation-business';
+export * from './qualitative-evaluation/qualitative-evaluation-business';

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 export const QualitativeEvaluationSchema = new Schema({
   title: {
@@ -12,19 +12,28 @@ export const QualitativeEvaluationSchema = new Schema({
     required: 'description required'
   },
   evaluator_id: {
-    type: ObjectId,
+    type: Number,
     required: 'Evaluator Id required'
   },
   evaluee_id: {
-    type: ObjectId,
+    type: Number,
     required: 'Evaluee Id required'
   },
-  date: {
+  created_at: {
     type: Date,
     default: Date.now,
     required: 'Date required'
+  },
+  updated_at: {
+    type: Date
+  },
+  company_id: {
+    type: Number,
+    required: 'Belongs to required'
   }
 });
+
+QualitativeEvaluationSchema.plugin(AutoIncrement);
 
 export const QualitativeEvaluationModel = mongoose.model(
   'QualitativeEvaluation',
@@ -36,4 +45,14 @@ export interface QualitativeEvaluationInputDTO {
   description: string;
   evaluator_id: string;
   evaluee_id: string;
+  company_id: number;
+}
+
+export interface QualitativeEvaluationEditDTO {
+  title?: string;
+  description?: string;
+  evaluator_id?: string;
+  evaluee_id?: string;
+  updated_at: number;
+  company_id?: number;
 }

@@ -10,5 +10,5 @@ export const schema = Joi.object().keys({
   evaluator_id: Joi.number().required(),
   evaluee_id: Joi.number().required(),
   self_ratings: Joi.array().items(ratings).required(),
-  belongs_to: Joi.number().required()
+  company_id: Joi.number().required()
 });

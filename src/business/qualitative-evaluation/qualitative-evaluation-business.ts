@@ -4,29 +4,28 @@ import {
   MissingParameterError,
   NotFoundError
 } from '../../error';
-import { QuantitativeEvaluationEditDTO, QuantitativeEvaluationInputDTO } from '../../model';
+import { QualitativeEvaluationEditDTO, QualitativeEvaluationInputDTO } from '../../model';
 import {
-  IQuantitativeEvaluationBusiness,
-  IQuantitativeEvaluationDatabase
-} from '../../types/quantitative-evaluation';
+  IQualitativeEvaluationBusiness,
+  IQualitativeEvaluationDatabase
+} from '../../types';
+import {} from '../../types/quantitative-evaluation';
 import { schema as QuantitativeEvaluationSchema } from './schema';
 
-export class QuantitativeEvaluationBusiness
-  implements IQuantitativeEvaluationBusiness
-{
-  private quantitativeEvaluationDatabase: IQuantitativeEvaluationDatabase;
-  constructor(quantitativeEvaluationDatabase: IQuantitativeEvaluationDatabase) {
-    this.quantitativeEvaluationDatabase = quantitativeEvaluationDatabase;
+export class QualitativeEvaluationBusiness implements IQualitativeEvaluationBusiness {
+  private qualitativeEvaluationDatabase: IQualitativeEvaluationDatabase;
+  constructor(qualitativeEvaluationDatabase: IQualitativeEvaluationDatabase) {
+    this.qualitativeEvaluationDatabase = qualitativeEvaluationDatabase;
   }
 
-  async addEvaluation(evaluation: QuantitativeEvaluationInputDTO) {
+  async addEvaluation(evaluation: QualitativeEvaluationInputDTO) {
     const { error } = QuantitativeEvaluationSchema.validate(evaluation);
 
     if (error?.details[0].message) {
       throw new InvalidParameterError(error?.details[0].message);
     }
 
-    await this.quantitativeEvaluationDatabase.addEvaluation(evaluation);
+    await this.qualitativeEvaluationDatabase.addEvaluation(evaluation);
   }
 
   async getEvaluationById(id: number): Promise<Document[]> {
@@ -35,7 +34,7 @@ export class QuantitativeEvaluationBusiness
     }
 
     const evaluation =
-      await this.quantitativeEvaluationDatabase.getEvaluationById(id);
+      await this.qualitativeEvaluationDatabase.getEvaluationById(id);
 
     if (!evaluation) {
       throw new NotFoundError();
@@ -50,7 +49,7 @@ export class QuantitativeEvaluationBusiness
     }
 
     const evaluation =
-      await this.quantitativeEvaluationDatabase.getEvaluationsFromEmployeeById(
+      await this.qualitativeEvaluationDatabase.getEvaluationsFromEmployeeById(
         id
       );
 
@@ -67,7 +66,7 @@ export class QuantitativeEvaluationBusiness
     }
 
     const evaluation =
-      await this.quantitativeEvaluationDatabase.getEvaluationsFromManagerById(
+      await this.qualitativeEvaluationDatabase.getEvaluationsFromManagerById(
         id
       );
 
@@ -84,7 +83,7 @@ export class QuantitativeEvaluationBusiness
     }
 
     const evaluation =
-      await this.quantitativeEvaluationDatabase.getEvaluationsFromManagerById(
+      await this.qualitativeEvaluationDatabase.getEvaluationsFromManagerById(
         company_id
       );
 
@@ -101,17 +100,17 @@ export class QuantitativeEvaluationBusiness
     }
 
     const evaluation =
-      await this.quantitativeEvaluationDatabase.getEvaluationById(id);
+      await this.qualitativeEvaluationDatabase.getEvaluationById(id);
 
     if (!evaluation) {
       throw new NotFoundError();
     }
 
-    await this.quantitativeEvaluationDatabase.deleteEvaluation(id);
+    await this.qualitativeEvaluationDatabase.deleteEvaluation(id);
   }
 
   async updateEvaluation(
-    evaluation: QuantitativeEvaluationEditDTO,
+    evaluation: QualitativeEvaluationEditDTO,
     id: number
   ): Promise<void> {
     if (!id) {
@@ -123,12 +122,12 @@ export class QuantitativeEvaluationBusiness
     }
 
     const evaluationToUpdate =
-      await this.quantitativeEvaluationDatabase.getEvaluationById(id);
+      await this.qualitativeEvaluationDatabase.getEvaluationById(id);
 
     if (!evaluationToUpdate) {
       throw new NotFoundError();
     }
 
-    await this.quantitativeEvaluationDatabase.updateEvaluation(evaluation, id);
+    await this.qualitativeEvaluationDatabase.updateEvaluation(evaluation, id);
   }
 }

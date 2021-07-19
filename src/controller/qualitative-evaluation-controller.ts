@@ -1,40 +1,35 @@
 import { Request, Response } from 'express';
 import {
-  QuantitativeEvaluationEditDTO,
-  QuantitativeEvaluationInputDTO
+  QualitativeEvaluationEditDTO,
+  QualitativeEvaluationInputDTO
 } from '../model';
 import {
-  IQuantitativeEvaluationBusiness,
-  IQuantitativeEvaluationController
+  IQualitativeEvaluationBusiness,
+  IQualitativeEvaluationController
 } from '../types';
 
-export class QuantitativeEvaluationController
-  implements IQuantitativeEvaluationController
+export class QualitativeEvaluationController
+  implements IQualitativeEvaluationController
 {
-  private quantitativeEvaluationBusiness: IQuantitativeEvaluationBusiness;
-  constructor(quantitativeEvaluationBusiness: IQuantitativeEvaluationBusiness) {
-    this.quantitativeEvaluationBusiness = quantitativeEvaluationBusiness;
+  private qualitativeBusiness: IQualitativeEvaluationBusiness;
+  constructor(qualitativeBusiness: IQualitativeEvaluationBusiness) {
+    this.qualitativeBusiness = qualitativeBusiness;
   }
 
   addEvaluation = async (req: Request, res: Response) => {
     try {
-      const {
-        evaluator_id,
-        evaluee_id,
-        self_ratings,
-        manager_ratings,
-        company_id
-      } = req.body;
+      const { evaluator_id, evaluee_id, title, description, company_id } =
+        req.body;
 
-      const input: QuantitativeEvaluationInputDTO = {
+      const input: QualitativeEvaluationInputDTO = {
         evaluator_id,
         evaluee_id,
-        self_ratings,
-        manager_ratings,
+        title,
+        description,
         company_id
       };
 
-      await this.quantitativeEvaluationBusiness.addEvaluation(input);
+      await this.qualitativeBusiness.addEvaluation(input);
 
       res.sendStatus(201);
     } catch (error) {
@@ -46,8 +41,7 @@ export class QuantitativeEvaluationController
     try {
       const id = Number(req.params.id);
 
-      const evaluations =
-        await this.quantitativeEvaluationBusiness.getEvaluationById(id);
+      const evaluations = await this.qualitativeBusiness.getEvaluationById(id);
       res.status(200).send(evaluations);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
@@ -59,9 +53,7 @@ export class QuantitativeEvaluationController
       const id = Number(req.params.id);
 
       const evaluations =
-        await this.quantitativeEvaluationBusiness.getEvaluationsFromEmployeeById(
-          id
-        );
+        await this.qualitativeBusiness.getEvaluationsFromEmployeeById(id);
       res.status(200).send(evaluations);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
@@ -73,9 +65,7 @@ export class QuantitativeEvaluationController
       const id = Number(req.params.id);
 
       const evaluations =
-        await this.quantitativeEvaluationBusiness.getEvaluationsFromManagerById(
-          id
-        );
+        await this.qualitativeBusiness.getEvaluationsFromManagerById(id);
       res.status(200).send(evaluations);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
@@ -87,7 +77,7 @@ export class QuantitativeEvaluationController
       const company_id = Number(req.params.belongsTo);
 
       const evaluations =
-        await this.quantitativeEvaluationBusiness.getEvaluationsFromManagerById(
+        await this.qualitativeBusiness.getEvaluationsFromManagerById(
           company_id
         );
       res.status(200).send(evaluations);
@@ -100,7 +90,7 @@ export class QuantitativeEvaluationController
     try {
       const id = Number(req.params.id);
 
-      await this.quantitativeEvaluationBusiness.deleteEvaluation(id);
+      await this.qualitativeBusiness.deleteEvaluation(id);
       res.sendStatus(204);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
@@ -111,27 +101,19 @@ export class QuantitativeEvaluationController
     try {
       const id = Number(req.params.id);
 
-      const {
-        evaluator_id,
-        evaluee_id,
-        self_ratings,
-        manager_ratings,
-        company_id
-      } = req.body;
+      const { evaluator_id, evaluee_id, title, description, company_id } =
+        req.body;
 
-      const evaluationToUpdate: QuantitativeEvaluationEditDTO = {
+      const evaluationToUpdate: QualitativeEvaluationEditDTO = {
         evaluator_id,
         evaluee_id,
-        self_ratings,
-        manager_ratings,
+        title,
+        description,
         company_id,
         updated_at: Date.now()
       };
 
-      await this.quantitativeEvaluationBusiness.updateEvaluation(
-        evaluationToUpdate,
-        id
-      );
+      await this.qualitativeBusiness.updateEvaluation(evaluationToUpdate, id);
       res.sendStatus(204);
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });

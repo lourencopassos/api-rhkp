@@ -2,7 +2,6 @@ import express from 'express';
 import { QuantitativeEvaluationBusiness } from '../business';
 import { QuantitativeEvaluationController } from '../controller';
 import { QuantitativeEvaluationDatabase } from '../data';
-import { HashManager } from '../utils/password-hash';
 
 export const quantitativeEvaluationRouter = express.Router();
 

@@ -1,18 +1,21 @@
-import { QuantitativeEvaluationModel, QuantitativeEvaluationInputDTO, QuantitativeEvaluationEditDTO } from '../model';
+import {
+  QualitativeEvaluationEditDTO,
+  QualitativeEvaluationInputDTO, QualitativeEvaluationModel
+} from '../model';
 import { BaseDatabase } from '.';
 import { Document } from 'mongoose';
-import { IQuantitativeEvaluationDatabase } from '../types/quantitative-evaluation';
+import { IQualitativeEvaluationDatabase } from '../types/qualitative-evaluation';
 
-export class QuantitativeEvaluationDatabase
+export class QualitativeEvaluationDatabase
   extends BaseDatabase
-  implements IQuantitativeEvaluationDatabase
+  implements IQualitativeEvaluationDatabase
 {
   public addEvaluation = async (
-    evaluation: QuantitativeEvaluationInputDTO
+    evaluation: QualitativeEvaluationInputDTO
   ): Promise<void> => {
     try {
       await this.getConnection();
-      new QuantitativeEvaluationModel(evaluation).save();
+      new QualitativeEvaluationModel(evaluation).save();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -21,7 +24,7 @@ export class QuantitativeEvaluationDatabase
   public getEvaluationById = async (id: number): Promise<Document[]> => {
     try {
       await this.getConnection();
-      return await QuantitativeEvaluationModel.findById(id).exec();
+      return await QualitativeEvaluationModel.findById(id).exec();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -32,7 +35,7 @@ export class QuantitativeEvaluationDatabase
   ): Promise<Document[]> => {
     try {
       await this.getConnection();
-      return await QuantitativeEvaluationModel.find({ evaluee_id }).exec();
+      return await QualitativeEvaluationModel.find({ evaluee_id }).exec();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -43,7 +46,7 @@ export class QuantitativeEvaluationDatabase
   ): Promise<Document[]> => {
     try {
       await this.getConnection();
-      return await QuantitativeEvaluationModel.find({ evaluator_id }).exec();
+      return await QualitativeEvaluationModel.find({ evaluator_id }).exec();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -54,7 +57,7 @@ export class QuantitativeEvaluationDatabase
   ): Promise<Document[]> => {
     try {
       await this.getConnection();
-      return await QuantitativeEvaluationModel.find({ company_id }).exec();
+      return await QualitativeEvaluationModel.find({ company_id }).exec();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -63,22 +66,19 @@ export class QuantitativeEvaluationDatabase
   public deleteEvaluation = async (id: number) => {
     try {
       await this.getConnection();
-      await QuantitativeEvaluationModel.findByIdAndRemove(id).exec();
+      await QualitativeEvaluationModel.findByIdAndRemove(id).exec();
     } catch (error) {
       throw new Error(error.message);
     }
   };
 
   public updateEvaluation = async (
-    evaluation: QuantitativeEvaluationEditDTO,
+    evaluation: QualitativeEvaluationEditDTO,
     id: number
   ) => {
     try {
       await this.getConnection();
-      await QuantitativeEvaluationModel.findByIdAndUpdate(
-        id,
-        evaluation
-      ).exec();
+      await QualitativeEvaluationModel.findByIdAndUpdate(id, evaluation).exec();
     } catch (error) {
       throw new Error(error.message);
     }
