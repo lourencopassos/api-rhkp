@@ -1,4 +1,4 @@
-import { EmployeeAuthenticationData } from '../utils/authenticator';
+import { EmployeeAuthenticationData, ManagerAuthenticationData } from '../utils/authenticator';
 
 export interface IHashManager {
   hash(text: string): Promise<string>;
@@ -6,6 +6,18 @@ export interface IHashManager {
 }
 
 export interface IAuthenticator {
-  generateToken(input: EmployeeAuthenticationData, expiresIn: string): string;
+  generateTokenByCpf(
+    input: EmployeeAuthenticationData,
+    expiresIn: string
+  ): string;
+  generateTokenByPhone(
+    input: EmployeeAuthenticationData,
+    expiresIn: string
+  ): string;
+  generateTokenByEmail(
+    input: ManagerAuthenticationData,
+    expiresIn: string
+  ): string;
   getDataEmployee(token: string): EmployeeAuthenticationData;
+  getDataManager(token: string): ManagerAuthenticationData;
 }
