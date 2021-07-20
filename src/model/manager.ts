@@ -49,3 +49,8 @@ export interface ManagerEditDTO {
   phone?: string;
   photo?: string;
 }
+
+export interface ManagerLoginInput {
+  email: string;
+  password: string;
+}

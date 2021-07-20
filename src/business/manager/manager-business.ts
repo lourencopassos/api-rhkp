@@ -4,20 +4,30 @@ import {
   MissingParameterError,
   NotFoundError
 } from '../../error';
-import { ManagerEditDTO, ManagerInputDTO } from '../../model';
+import {
+  ManagerEditDTO,
+  ManagerInputDTO,
+  ManagerLoginInput
+} from '../../model';
 import { IManagerBusiness, IManagerDatabase } from '../../types';
-import { IHashManager } from '../../types/utils';
+import { IAuthenticator, IHashManager } from '../../types/utils';
 import { schema as ManagerSchema } from './schema';
 
 export class ManagerBusiness implements IManagerBusiness {
   private managerDatabase: IManagerDatabase;
   private hashManager: IHashManager;
-  constructor(managerDatabase: IManagerDatabase, hashManager: IHashManager) {
+  private authenticator: IAuthenticator;
+  constructor(
+    managerDatabase: IManagerDatabase,
+    hashManager: IHashManager,
+    authenticator: IAuthenticator
+  ) {
     this.managerDatabase = managerDatabase;
     this.hashManager = hashManager;
+    this.authenticator = authenticator;
   }
 
-  async addManager(manager: ManagerInputDTO) {
+  async addManager(manager: ManagerInputDTO): Promise<string> {
     const { error } = ManagerSchema.validate(manager);
 
     if (error?.details[0].message) {
@@ -38,12 +48,40 @@ export class ManagerBusiness implements IManagerBusiness {
       throw new InvalidParameterError('Phone already subscribed');
     }
 
-    const { password } = manager;
+    const { password, email, company_id } = manager;
 
     const hashedPassword = await this.hashManager.hash(password);
     manager.password = hashedPassword as unknown as string;
-    
+
     await this.managerDatabase.addManager(manager);
+
+    return this.authenticator.generateTokenByEmail(
+      { email, company_id },
+      process.env.ACCESS_TOKEN_EXPIRES_IN!
+    );
+  }
+
+  async login(loginData: ManagerLoginInput): Promise<string> {
+    if (!loginData) {
+      throw new MissingParameterError('login data');
+    }
+
+    const manager = await this.managerDatabase.getManagersByEmail(
+      loginData.email
+    );
+
+    if (!manager) {
+      throw new NotFoundError();
+    }
+
+    const { company_id, email, password } = manager;
+
+    await this.hashManager.compare(loginData.password, password);
+
+    return this.authenticator.generateTokenByEmail(
+      { email, company_id },
+      process.env.ACCESS_TOKEN_EXPIRES_IN!
+    );
   }
 
   async getManagerById(id: string): Promise<Document> {

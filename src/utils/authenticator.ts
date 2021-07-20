@@ -1,13 +1,47 @@
 import * as jwt from 'jsonwebtoken';
 
 export class Authenticator {
-  public generateToken(
+  public generateTokenByCpf(
     input: EmployeeAuthenticationData,
     expiresIn: string = process.env.ACCESS_TOKEN_EXPIRES_IN!
   ): string {
     const token = jwt.sign(
       {
         cpf: input.cpf,
+        company_id: input.company_id
+      },
+      process.env.JWT_KEY as string,
+      {
+        expiresIn
+      }
+    );
+    return token;
+  }
+
+  public generateTokenByPhone(
+    input: EmployeeAuthenticationData,
+    expiresIn: string = process.env.ACCESS_TOKEN_EXPIRES_IN!
+  ): string {
+    const token = jwt.sign(
+      {
+        phone: input.phone,
+        company_id: input.company_id
+      },
+      process.env.JWT_KEY as string,
+      {
+        expiresIn
+      }
+    );
+    return token;
+  }
+
+  public generateTokenByEmail(
+    input: ManagerAuthenticationData,
+    expiresIn: string = process.env.ACCESS_TOKEN_EXPIRES_IN!
+  ): string {
+    const token = jwt.sign(
+      {
+        email: input.email,
         company_id: input.company_id
       },
       process.env.JWT_KEY as string,
@@ -26,10 +60,25 @@ export class Authenticator {
     };
     return result;
   }
+
+  public getDataManager(token: string): ManagerAuthenticationData {
+    const payload = jwt.verify(token, process.env.JWT_KEY as string) as any;
+    const result = {
+      email: payload.email,
+      company_id: payload.company_id
+    };
+    return result;
+  }
 }
 
 export interface EmployeeAuthenticationData {
   cpf?: string;
+  phone?: string;
+  company_id: number;
+}
+
+export interface ManagerAuthenticationData {
+  email?: string;
   phone?: string;
   company_id: number;
 }
