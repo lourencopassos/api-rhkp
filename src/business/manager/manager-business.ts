@@ -48,7 +48,7 @@ export class ManagerBusiness implements IManagerBusiness {
       throw new InvalidParameterError('Phone already subscribed');
     }
 
-    const { password, email, company_id } = manager;
+    const { password, email, company_id, role } = manager;
 
     const hashedPassword = await this.hashManager.hash(password);
     manager.password = hashedPassword as unknown as string;
@@ -56,7 +56,7 @@ export class ManagerBusiness implements IManagerBusiness {
     await this.managerDatabase.addManager(manager);
 
     return this.authenticator.generateTokenByEmail(
-      { email, company_id },
+      { email, company_id, role },
       process.env.ACCESS_TOKEN_EXPIRES_IN!
     );
   }
@@ -74,12 +74,12 @@ export class ManagerBusiness implements IManagerBusiness {
       throw new NotFoundError();
     }
 
-    const { company_id, email, password } = manager;
+    const { company_id, email, password, role } = manager;
 
     await this.hashManager.compare(loginData.password, password);
 
     return this.authenticator.generateTokenByEmail(
-      { email, company_id },
+      { email, company_id, role },
       process.env.ACCESS_TOKEN_EXPIRES_IN!
     );
   }
