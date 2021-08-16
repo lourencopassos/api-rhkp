@@ -10,7 +10,7 @@ export class ManagerController implements IManagerController {
 
   addManager = async (req: Request, res: Response) => {
     try {
-      const { name, email, company_id, password, phone, photo } = req.body;
+      const { name, email, company_id, password, phone, photo, role } = req.body;
 
       const input: ManagerInputDTO = {
         name,
@@ -18,7 +18,8 @@ export class ManagerController implements IManagerController {
         company_id,
         password,
         phone,
-        photo
+        photo,
+        role
       };
 
       const token = await this.managerBusiness.addManager(input);
