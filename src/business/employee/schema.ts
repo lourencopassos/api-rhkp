@@ -10,5 +10,6 @@ export const schema = Joi.object().keys({
   phone: Joi.string().required(),
   cpf: Joi.document().cpf(),
   // phone: Joi.string().length(11).pattern(/^\d+$/).required(),
-  photo: Joi.string().uri().min(6)
+  photo: Joi.string().uri().min(6),
+  role: Joi.number().equal(3)
 });
