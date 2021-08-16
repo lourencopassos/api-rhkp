@@ -16,7 +16,7 @@ export class EmployeeController implements IEmployeeController {
 
   addEmployee = async (req: Request, res: Response) => {
     try {
-      const { name, email, company_id, password, phone, photo, cpf } = req.body;
+      const { name, email, company_id, password, phone, photo, cpf, role } = req.body;
 
       const input: EmployeeInputDTO = {
         name,
@@ -25,7 +25,8 @@ export class EmployeeController implements IEmployeeController {
         password,
         phone,
         photo,
-        cpf
+        cpf,
+        role,
       };
 
       const token = await this.employeeBusiness.addEmployee(input);
